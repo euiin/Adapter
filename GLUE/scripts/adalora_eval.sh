@@ -1,0 +1,14 @@
+CUDA_VISIBLE_DEVICES=7 python run_glue_adalora_trainer.py \
+--model_name_or_path roberta-base \
+--task_name rte \
+--do_eval \
+--adalora_path ./output_adalora/glue/rte \
+--output_dir ./output_adalora/test/rte \
+--apply_adalora \
+--apply_lora \
+--lora_type svd --target_rank 1  --lora_r 2  \
+--lora_alpha 32 \
+--target_modules 'query', 'value' \
+--modules_to_save "classifier" \
+--logging_steps 10 \
+--save_strategy epoch

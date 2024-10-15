@@ -1,0 +1,28 @@
+CUDA_VISIBLE_DEVICES=2 python run_glue_adalora_trainer.py \
+--model_name_or_path roberta-base \
+--task_name rte \
+--apply_adalora \
+--apply_lora \
+--lora_type svd --target_rank 1  --lora_r 2  \
+--reg_orth_coef 0.3 \
+--init_warmup 600 --final_warmup 1800 --mask_interval 1 \
+--beta1 0.85 --beta2 0.85 \
+--target_modules 'query', 'key', 'value', 'intermediate.dense', 'output.dense' \
+--modules_to_save "classifier" \
+--lora_alpha 32 \
+--do_train \
+--do_eval \
+--max_seq_length 320 \
+--learning_rate 1.2e-3 --num_train_epochs 250 \
+--warmup_steps 200 \
+--weight_decay 001 \
+--per_device_train_batch_size 64 --evaluation_strategy no --eval_steps 100 \
+--save_strategy steps --save_steps 10000 \
+--logging_steps 10 \
+--seed 6 \
+--output_dir ./output_adalora/glue/rte_all \
+--overwrite_output_dir \
+--wandb_project "Prun-Extend-Lora" \
+--run_name "roberta-base_rte_adalora_all_250" \
+--wandb_watch "all" \
+--wandb_log_model "checkpoint"
